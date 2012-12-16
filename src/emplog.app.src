@@ -1,0 +1,32 @@
+{application, emplog,
+ [
+  {description, "The Logging Server for the EMP system."},
+  {vsn, "0.1"},
+  {registered, [emplogd]},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []},
+  {mod, { emplog_app, [
+  
+            % SYSLOG IS PREFERED AS ITS A KNOWN STANDARD %
+            %{usesyslog, false},  % On *nix emplog will use syslogd rather than disk_log. To override, un-comment.
+                           
+            % Disk_log Options --- These are ignored if usesyslog=true %
+            {type, wrap},       % Wrapping to facilitate rotating logs.
+            {format, external}, % Rather than internal format.
+            {distributed, []},  % Otherwise this should be a list of nodes.
+            {size,{2500000,5}} % 2.5GB log files by default.
+%            {head,              % A constant warning header for each file.
+%                "###############################################################################\n"++
+%                "##                    Extensible Monitoring Platform Logger                  ##\n"++
+%                "## Please do not edit these files by hand. These files are monitored by EMP, ##\n"++
+%                "## so all alterations will possibly cause event triggers within EMP. Please  ##\n"++
+%                "## use the emplog api to access them, or alter the settings. To alter alerts ##\n"++
+%                "## consult the LoggerPlugin and its README.      Thank you, the EMP Group.   ##\n"++
+%                "###############################################################################\n"
+%            } 
+        ]}
+   }
+ ]}.
